@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TechApp.Models;
-namespace TechApp.Data;
+using Tech.Models;
+
+
+namespace Tech.DataAccess.Data;
 
 public class ApplicationDbContext : DbContext
 {

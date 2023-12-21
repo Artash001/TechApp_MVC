@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TechApp.Data;
-using TechApp.Models;
+using Tech.DataAccess.Data;
+using Tech.Models;
 
 namespace TechApp.Controllers;
 

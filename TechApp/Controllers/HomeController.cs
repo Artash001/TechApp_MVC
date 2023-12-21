@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using TechApp.Models;
+using Tech.Models;
 
 namespace TechApp.Controllers
 {
