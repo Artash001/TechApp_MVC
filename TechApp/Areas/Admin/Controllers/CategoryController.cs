@@ -3,18 +3,19 @@ using Tech.DataAccess.Data;
 using Tech.DataAccess.Repository.IRepository;
 using Tech.Models;
 
-namespace TechApp.Controllers;
+namespace TechApp.Areas.Admin.Controllers;
 
+[Area("Admin")]
 public class CategoryController : Controller
 {
-    private readonly ICategoryRepository _categoryRepo;
-    public CategoryController(ICategoryRepository db)
+    private readonly IUnitOfWork _unitOfWork;
+    public CategoryController(IUnitOfWork unitOfWork)
     {
-        _categoryRepo = db;
+        _unitOfWork = unitOfWork;
     }
     public IActionResult Index()
     {
-        List<Category> objCategoryList = _categoryRepo.GetAll().ToList();
+        List<Category> objCategoryList = _unitOfWork.Category.GetAll().ToList();
         return View(objCategoryList);
     }
 
@@ -32,8 +33,8 @@ public class CategoryController : Controller
         }
         if (ModelState.IsValid)
         {
-            _categoryRepo.Add(obj);
-            _categoryRepo.Save();
+            _unitOfWork.Category.Add(obj);
+            _unitOfWork.Save();
             TempData["success"] = "Category created successfully";
             return RedirectToAction("Index");
         }
@@ -42,12 +43,12 @@ public class CategoryController : Controller
 
     public IActionResult Edit(int? id)
     {
-        if(id==null || id == 0)
+        if (id == null || id == 0)
         {
             return NotFound();
         }
-        Category? categoryFromDb = _categoryRepo.Get(u => u.Id == id);
-        if(categoryFromDb == null)
+        Category? categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
+        if (categoryFromDb == null)
         {
             return NotFound();
         }
@@ -59,8 +60,8 @@ public class CategoryController : Controller
     {
         if (ModelState.IsValid)
         {
-            _categoryRepo.Update(obj);
-            _categoryRepo.Save();
+            _unitOfWork.Category.Update(obj);
+            _unitOfWork.Save();
             TempData["success"] = "Category edited successfully";
             return RedirectToAction("Index");
         }
@@ -73,7 +74,7 @@ public class CategoryController : Controller
         {
             return NotFound();
         }
-        Category? categoryFromDb = _categoryRepo.Get(u => u.Id == id);
+        Category? categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
         if (categoryFromDb == null)
         {
             return NotFound();
@@ -84,8 +85,8 @@ public class CategoryController : Controller
     [HttpPost]
     public IActionResult Delete(Category obj)
     {
-        _categoryRepo.Remove(obj);
-        _categoryRepo.Save();
+        _unitOfWork.Category.Remove(obj);
+        _unitOfWork.Save();
         TempData["success"] = "Category deleted successfully";
         return RedirectToAction("Index");
     }
