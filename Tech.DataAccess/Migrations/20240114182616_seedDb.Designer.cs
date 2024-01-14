@@ -11,8 +11,8 @@ using Tech.DataAccess.Data;
 namespace Tech.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231230185028_addProductsToDb")]
-    partial class addProductsToDb
+    [Migration("20240114182616_seedDb")]
+    partial class seedDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,19 +49,19 @@ namespace Tech.DataAccess.Migrations
                         {
                             Id = 1,
                             DisplayOrder = 1,
-                            Name = "Action"
+                            Name = "Engine"
                         },
                         new
                         {
                             Id = 2,
                             DisplayOrder = 2,
-                            Name = "SciFi"
+                            Name = "Transmission"
                         },
                         new
                         {
                             Id = 3,
                             DisplayOrder = 3,
-                            Name = "History"
+                            Name = "Steering System"
                         });
                 });
 
