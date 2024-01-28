@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Tech.DataAccess.Data;
 using Tech.DataAccess.Repository.IRepository;
 using Tech.Models;
+using Tech.Models.ViewModels;
 
 namespace TechApp.Areas.Admin.Controllers;
 
@@ -10,7 +12,7 @@ public class ProductController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
     public ProductController(IUnitOfWork unitOfWork)
-    {
+    { 
         _unitOfWork = unitOfWork;
     }
     public IActionResult Index()
@@ -21,20 +23,40 @@ public class ProductController : Controller
 
     public IActionResult Create()
     {
-        return View();
+        //ViewBag.CategoryList = CategoryList;
+
+        ProductVM productVM = new()
+        {
+            CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+            }),
+            Product = new Product()
+        };
+        return View(productVM);
     }
 
     [HttpPost]
-    public IActionResult Create(Product obj)
+    public IActionResult Create(ProductVM productVM)
     {
         if (ModelState.IsValid)
         {
-            _unitOfWork.Product.Add(obj);
+            _unitOfWork.Product.Add(productVM.Product);
             _unitOfWork.Save();
             TempData["success"] = "Product created successfully";
             return RedirectToAction("Index");
         }
-        return View();
+        else
+        {
+            productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+            });         
+            return View(productVM);
+        }
+        
     }
 
     public IActionResult Edit(int? id)
