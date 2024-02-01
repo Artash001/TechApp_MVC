@@ -66,7 +66,7 @@
                         </div>
                         <div class="mb-3 row">
                             <label asp-for="Product.ImageUrl">Image Url</label>
-                            <input type="file" name="file" class="form-control" />
+                            <input type="file" name="file" class="form-control" asp-for="Product.ImageUrl" />
                             <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
                         </div>
                         <div class="row">

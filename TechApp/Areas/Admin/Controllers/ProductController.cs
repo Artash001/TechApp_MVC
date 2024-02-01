@@ -37,7 +37,7 @@ public class ProductController : Controller
             }),
             Product = new Product()
         };
-        if(id== null || id == 0)
+        if(id == null || id == 0)
         {
             return View(productVM);
         }
