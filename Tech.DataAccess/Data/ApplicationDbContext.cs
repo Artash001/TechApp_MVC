@@ -15,6 +15,7 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 
     public DbSet<Category> Categories { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<Company> Companies { get; set; }
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,6 +26,12 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
                 new Category { Id = 1, Name = "Engine", DisplayOrder = 1 },
                 new Category { Id = 2, Name = "Transmission", DisplayOrder = 2 },
                 new Category { Id = 3, Name = "Steering System", DisplayOrder = 3 }
+            );
+
+        modelBuilder.Entity<Company>().HasData(
+                new Company { Id = 1, Name = "BMW Group", StreetAddress="123 bmw", City="Munich", State="IL", PostalCode="19746",PhoneNumber="546548646"},
+                new Company { Id = 2, Name = "Daimler", StreetAddress = "123 Daimler", City = "Berlin", State = "MY", PostalCode = "48923", PhoneNumber = "987982329" },
+                new Company { Id = 3, Name = "VAG Group", StreetAddress = "123 Vag", City = "Dortmund", State = "RT", PostalCode = "89721", PhoneNumber = "213656899" }
             );
 
         modelBuilder.Entity<Product>().HasData(

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tech.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using Tech.DataAccess.Data;
 namespace Tech.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240207101625_updateNameToString")]
+    partial class updateNameToString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -270,70 +273,6 @@ namespace Tech.DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Tech.Models.Company", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PostalCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("State")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StreetAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Companies");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            City = "Munich",
-                            Name = "BMW Group",
-                            PhoneNumber = "546548646",
-                            PostalCode = "19746",
-                            State = "IL",
-                            StreetAddress = "123 bmw"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            City = "Berlin",
-                            Name = "Daimler",
-                            PhoneNumber = "987982329",
-                            PostalCode = "48923",
-                            State = "MY",
-                            StreetAddress = "123 Daimler"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            City = "Dortmund",
-                            Name = "VAG Group",
-                            PhoneNumber = "213656899",
-                            PostalCode = "89721",
-                            State = "RT",
-                            StreetAddress = "123 Vag"
-                        });
-                });
-
             modelBuilder.Entity("Tech.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -477,9 +416,6 @@ namespace Tech.DataAccess.Migrations
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -492,8 +428,6 @@ namespace Tech.DataAccess.Migrations
 
                     b.Property<string>("StreetAddress")
                         .HasColumnType("nvarchar(max)");
-
-                    b.HasIndex("CompanyId");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
@@ -558,15 +492,6 @@ namespace Tech.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("Tech.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("Tech.Models.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId");
-
-                    b.Navigation("Company");
                 });
 #pragma warning restore 612, 618
         }
