@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tech.DataAccess.Data;
 using Tech.DataAccess.Repository.IRepository;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Tech.DataAccess.Repository;
 
@@ -26,9 +27,18 @@ public class Repository<T> : IRepository<T> where T : class
         dbSet.Add(entity);
     }
 
-    public T Get(Expression<Func<T, bool>> filter, string? IncludeProperties = null)
+    public T Get(Expression<Func<T, bool>> filter, string? IncludeProperties = null, bool tracked = false)
     {
-        IQueryable<T> query = dbSet;
+        IQueryable<T> query;
+        if (tracked)
+        {
+            query = dbSet;           
+        }
+        else
+        {
+            query = dbSet.AsNoTracking();           
+        }
+
         query = query.Where(filter);
         if (!string.IsNullOrEmpty(IncludeProperties))
         {
@@ -40,9 +50,10 @@ public class Repository<T> : IRepository<T> where T : class
         return query.FirstOrDefault();
     }
 
-    public IEnumerable<T> GetAll(string? IncludeProperties = null)
+    public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? IncludeProperties = null)
     {
         IQueryable<T> query = dbSet;
+        if(filter != null) {  query = query.Where(filter); }
         if (!string.IsNullOrEmpty(IncludeProperties))
         {
             foreach (var property in IncludeProperties.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries))
